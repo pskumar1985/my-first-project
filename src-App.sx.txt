@@ -1,0 +1,93 @@
+Great. `App.jsx` easy explanation:
+
+- [src/App.jsx](D:\PSK\Python_Code\Login_page\src\App.jsx)
+
+1. **Imports**
+- React hooks (`useState`, `useEffect`, `useRef`, `useMemo`) import பண்ணுறோம்.
+- இது state manage பண்ண, lifecycle logic run பண்ண, file input reference handle பண்ண use ஆகுது.
+
+2. **Greetings array**
+- 20 greeting messages list.
+- இதில் `Hello Kumar`, `Hai Kumar` உட்பட messages rotationக்கு use ஆகுது.
+
+3. **`isPdf(file)`**
+- File MIME type `application/pdf`ஆ?
+- அல்லது filename `.pdf`ஆ முடிவதா?
+- இதுல ஏதாவது trueனா PDF accept.
+
+4. **`countPdfPages(file)`**
+- PDF file buffer read பண்ணி text convert பண்ணும்.
+- `/Type /Page` pattern count பண்ணி approximate page count return பண்ணும்.
+- முடியலனா `-1` return.
+
+5. **Theme helper functions**
+- `readSavedTheme()`:
+  - `localStorage`ல saved theme இருக்கா படிக்கும்.
+  - error வந்தா safeஆ `false`.
+- `saveTheme(isDark)`:
+  - theme value save பண்ணும்.
+  - storage error வந்தாலும் app crash ஆகாது.
+
+6. **Component state setup**
+- `greetingIndex`: current greeting index
+- `isDark`: dark/light mode
+- `message` + `messageType`: success/error message
+- `previewUrl`: iframe previewக்கான object URL
+- `pageCount`: page count text
+- `dragOver`: drag UI highlight
+- `inputRef`: file input DOM reference
+
+7. **`greetingText` (`useMemo`)**
+- current index அடிப்படையில் ஒரு greeting மட்டும் derive பண்ணும்.
+
+8. **Greeting rotation (`useEffect`)**
+- `setInterval` மூலம் 2.2 secondsக்கு ஒரு greeting change ஆகும்.
+- cleanupல் `clearInterval` செய்து memory leak தவிர்க்கிறோம்.
+
+9. **Theme apply (`useEffect`)**
+- `body`க்கு `dark` class toggle.
+- theme change ஆனதெல்லாம் `localStorage` save.
+
+10. **Preview cleanup (`useEffect`)**
+- component unmount ஆகும் போது `URL.revokeObjectURL` call பண்ணி memory leak avoid.
+
+11. **`clearPreview()`**
+- பழைய preview URL clear
+- iframe source reset
+- page count reset (`--`)
+
+12. **`processFile(file)` (Main logic)**
+- message reset
+- file இல்லனா error message
+- PDF இல்லனா input clear + error
+- valid PDFனா:
+  - old URL revoke
+  - new object URL create
+  - preview set
+  - page count compute
+  - success message set
+
+13. **`handleSubmit`**
+- form submit prevent default
+- inputல first file எடுத்துப் `processFile` call.
+
+14. **`handleDrop`**
+- drag/drop file எடுத்துக் கொள்ளும்
+- `DataTransfer` use பண்ணி input value update
+- `processFile` call.
+
+15. **JSX UI return**
+- Theme toggle button (`☾/☀`)
+- Title + subtitle
+- Greeting bar
+- Upload form
+- Dropzone area
+- File input + upload button
+- Message area
+- Preview section (PDF iframe + page count)
+
+16. **Condition-based UI**
+- `previewUrl` இருந்தால் மட்டும் preview section show.
+- `messageType` அடிப்படையில் error/success color.
+
+If you want, next I’ll explain the same file with exact line numbers from your current file.
